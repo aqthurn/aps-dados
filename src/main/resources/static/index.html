@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Focos de Queimadas</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<h1>Focos de Queimadas</h1>
+<p id="status">Nenhum dado carregado</p>
+
+<section>
+    <h2>Dados</h2>
+    <form id="formUpload">
+        <input type="file" id="arquivo" accept=".csv" required>
+        <button type="submit">Enviar CSV</button>
+        <button type="button" id="btnLimpar">Limpar</button>
+    </form>
+</section>
+
+<section>
+    <h2>Ordenação</h2>
+    <form id="formOrdenar">
+        <select id="criterio">
+            <option value="DATA">Data</option>
+            <option value="BIOMA">Bioma</option>
+            <option value="MUNICIPIO">Município</option>
+        </select>
+        <select id="algoritmo">
+            <option value="BUBBLE">Bubble Sort</option>
+            <option value="SELECTION">Selection Sort</option>
+            <option value="INSERTION">Insertion Sort</option>
+            <option value="SHELL">Shell Sort</option>
+            <option value="MERGE">Merge Sort</option>
+            <option value="QUICK" selected>Quick Sort</option>
+            <option value="HEAP">Heap Sort</option>
+        </select>
+        <select id="ordem">
+            <option value="false">Crescente</option>
+            <option value="true">Decrescente</option>
+        </select>
+        <button type="submit">Ordenar</button>
+    </form>
+    <p id="metricas"></p>
+    <table>
+        <thead><tr><th>Data</th><th>Município</th><th>Bioma</th></tr></thead>
+        <tbody id="tabela"></tbody>
+    </table>
+</section>
+
+<script src="app.js"></script>
+</body>
+</html>

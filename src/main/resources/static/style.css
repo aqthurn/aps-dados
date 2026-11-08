@@ -1,0 +1,27 @@
+body {
+    font-family: sans-serif;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 16px;
+}
+
+section {
+    margin-bottom: 24px;
+}
+
+form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    border-bottom: 1px solid #ddd;
+    padding: 4px 8px;
+    text-align: left;
+}
