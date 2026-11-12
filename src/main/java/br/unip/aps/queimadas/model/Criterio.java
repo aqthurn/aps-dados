@@ -4,9 +4,18 @@ import java.util.Comparator;
 
 public enum Criterio {
 
-    DATA(Comparator.comparing(FocoQueimada::dataHora)),
-    BIOMA(Comparator.comparing(FocoQueimada::bioma)),
-    MUNICIPIO(Comparator.comparing(FocoQueimada::municipio));
+    DATA(Comparator.comparing(FocoQueimada::dataHora)
+            .thenComparing(FocoQueimada::chaveMunicipio)
+            .thenComparingLong(FocoQueimada::id)),
+
+    BIOMA(Comparator.comparing(FocoQueimada::chaveBioma)
+            .thenComparing(FocoQueimada::chaveMunicipio)
+            .thenComparing(FocoQueimada::dataHora)
+            .thenComparingLong(FocoQueimada::id)),
+
+    MUNICIPIO(Comparator.comparing(FocoQueimada::chaveMunicipio)
+            .thenComparing(FocoQueimada::dataHora)
+            .thenComparingLong(FocoQueimada::id));
 
     private final Comparator<FocoQueimada> comparador;
 

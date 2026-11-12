@@ -10,6 +10,7 @@ public abstract class Ordenador {
     private Comparator<FocoQueimada> comparador;
     private long comparacoes;
     private long trocas;
+    private long movimentacoes;
 
     public abstract String nome();
 
@@ -20,10 +21,12 @@ public abstract class Ordenador {
         this.comparador = comparador;
         this.comparacoes = 0;
         this.trocas = 0;
+        this.movimentacoes = 0;
         long inicio = System.nanoTime();
         ordenar();
         double tempoMs = (System.nanoTime() - inicio) / 1_000_000.0;
-        return new Resultado(nome(), vetor.length, comparacoes, trocas, tempoMs);
+        return new Resultado(nome(), vetor.length, comparacoes, trocas, movimentacoes,
+                comparacoes + trocas + movimentacoes, tempoMs);
     }
 
     protected int comparar(FocoQueimada a, FocoQueimada b) {
@@ -39,6 +42,6 @@ public abstract class Ordenador {
     }
 
     protected void mover() {
-        trocas++;
+        movimentacoes++;
     }
 }

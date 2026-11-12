@@ -4,51 +4,138 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Focos de Queimadas</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css?v=2">
 </head>
 <body>
-<h1>Focos de Queimadas</h1>
-<p id="status">Nenhum dado carregado</p>
+<header>
+    <h1>Focos de Queimadas</h1>
+    <span id="status">Nenhum dado carregado</span>
+</header>
 
-<section>
-    <h2>Dados</h2>
-    <form id="formUpload">
-        <input type="file" id="arquivo" accept=".csv" required>
-        <button type="submit">Enviar CSV</button>
-        <button type="button" id="btnLimpar">Limpar</button>
-    </form>
-</section>
+<nav>
+    <button data-aba="dados" class="ativa">Dados</button>
+    <button data-aba="ordenacao">Ordenação</button>
+    <button data-aba="comparar">Comparar algoritmos</button>
+    <button data-aba="painel">Painel</button>
+</nav>
 
-<section>
-    <h2>Ordenação</h2>
-    <form id="formOrdenar">
-        <select id="criterio">
-            <option value="DATA">Data</option>
-            <option value="BIOMA">Bioma</option>
-            <option value="MUNICIPIO">Município</option>
-        </select>
-        <select id="algoritmo">
-            <option value="BUBBLE">Bubble Sort</option>
-            <option value="SELECTION">Selection Sort</option>
-            <option value="INSERTION">Insertion Sort</option>
-            <option value="SHELL">Shell Sort</option>
-            <option value="MERGE">Merge Sort</option>
-            <option value="QUICK" selected>Quick Sort</option>
-            <option value="HEAP">Heap Sort</option>
-        </select>
-        <select id="ordem">
-            <option value="false">Crescente</option>
-            <option value="true">Decrescente</option>
-        </select>
-        <button type="submit">Ordenar</button>
-    </form>
-    <p id="metricas"></p>
-    <table>
-        <thead><tr><th>Data</th><th>Município</th><th>Bioma</th></tr></thead>
-        <tbody id="tabela"></tbody>
-    </table>
-</section>
+<main>
+    <section id="dados">
+        <div class="cartao">
+            <h2>Baixar do INPE</h2>
+            <form id="formInpe">
+                <label>Estado <select id="uf"></select></label>
+                <label><input type="checkbox" name="ano" value="2023" checked> 2023</label>
+                <label><input type="checkbox" name="ano" value="2024" checked> 2024</label>
+                <button type="submit">Baixar e carregar</button>
+            </form>
+        </div>
+        <div class="cartao">
+            <h2>Enviar arquivo</h2>
+            <form id="formUpload">
+                <input type="file" id="arquivo" accept=".csv,.zip" required>
+                <button type="submit">Enviar</button>
+            </form>
+        </div>
+        <div class="cartao">
+            <h2>Arquivos carregados</h2>
+            <table>
+                <thead><tr><th>Arquivo</th><th>Registros</th><th>Linhas inválidas</th></tr></thead>
+                <tbody id="tabArquivos"></tbody>
+            </table>
+            <button id="btnLimpar" class="perigo">Remover todos</button>
+        </div>
+    </section>
 
-<script src="app.js"></script>
+    <section id="ordenacao" hidden>
+        <form id="formOrdenar" class="cartao">
+            <label>Critério
+                <select id="oCriterio">
+                    <option value="DATA">Data</option>
+                    <option value="BIOMA">Bioma</option>
+                    <option value="MUNICIPIO">Município</option>
+                </select>
+            </label>
+            <label>Algoritmo
+                <select id="oAlgoritmo">
+                    <option value="BUBBLE">Bubble Sort</option>
+                    <option value="SELECTION">Selection Sort</option>
+                    <option value="INSERTION">Insertion Sort</option>
+                    <option value="SHELL">Shell Sort</option>
+                    <option value="MERGE">Merge Sort</option>
+                    <option value="QUICK" selected>Quick Sort</option>
+                    <option value="HEAP">Heap Sort</option>
+                </select>
+            </label>
+            <label>Ordem
+                <select id="oOrdem">
+                    <option value="false">Crescente</option>
+                    <option value="true">Decrescente</option>
+                </select>
+            </label>
+            <label>Ano <select id="oAno" class="filtroAno"></select></label>
+            <label>Bioma <select id="oBioma" class="filtroBioma"></select></label>
+            <label>Amostra <input type="number" id="oAmostra" min="1" placeholder="todos"></label>
+            <button type="submit">Ordenar</button>
+            <button type="button" id="btnExportar">Exportar CSV</button>
+        </form>
+        <div id="metricas" class="kpis"></div>
+        <div class="cartao">
+            <table>
+                <thead><tr><th>#</th><th>Data</th><th>Município</th><th>Bioma</th><th>Lat</th><th>Lon</th></tr></thead>
+                <tbody id="tabOrdenado"></tbody>
+            </table>
+            <div class="paginacao">
+                <button id="pagAnterior" disabled>Anterior</button>
+                <span id="pagInfo"></span>
+                <button id="pagProxima" disabled>Próxima</button>
+            </div>
+        </div>
+    </section>
+
+    <section id="comparar" hidden>
+        <form id="formComparar" class="cartao">
+            <label>Critério
+                <select id="cCriterio">
+                    <option value="DATA">Data</option>
+                    <option value="BIOMA">Bioma</option>
+                    <option value="MUNICIPIO">Município</option>
+                </select>
+            </label>
+            <label>Ano <select id="cAno" class="filtroAno"></select></label>
+            <label>Bioma <select id="cBioma" class="filtroBioma"></select></label>
+            <label>Amostra <input type="number" id="cAmostra" min="1" value="5000"></label>
+            <button type="submit">Executar todos</button>
+        </form>
+        <p class="dica" id="dicaLimite"></p>
+        <div class="grade">
+            <div class="cartao"><h2>Total de operações</h2><canvas id="gOperacoes"></canvas></div>
+            <div class="cartao"><h2>Tempo (ms)</h2><canvas id="gTempo"></canvas></div>
+        </div>
+        <div class="cartao">
+            <table>
+                <thead><tr><th>Algoritmo</th><th>Complexidade</th><th>Comparações</th><th>Trocas</th>
+                    <th>Movimentações</th><th>Total</th><th>Tempo (ms)</th><th>Resultado</th></tr></thead>
+                <tbody id="tabComparar"></tbody>
+            </table>
+        </div>
+    </section>
+
+    <section id="painel" hidden>
+        <div class="cartao filtros">
+            <label>Ano <select id="pAno" class="filtroAno"></select></label>
+            <label>Bioma <select id="pBioma" class="filtroBioma"></select></label>
+        </div>
+        <div id="kpis" class="kpis"></div>
+        <div class="grade">
+            <div class="cartao"><h2>Focos por mês</h2><canvas id="gMes"></canvas></div>
+            <div class="cartao"><h2>Focos por bioma</h2><canvas id="gBioma"></canvas></div>
+        </div>
+        <div class="cartao"><h2>10 municípios com mais focos</h2><canvas id="gMunicipios"></canvas></div>
+    </section>
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="app.js?v=2"></script>
 </body>
 </html>

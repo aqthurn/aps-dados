@@ -20,6 +20,7 @@ public class InsertionSort extends Ordenador {
                 j--;
             }
             v[j + 1] = atual;
+            mover();
         }
     }
 }

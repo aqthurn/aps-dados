@@ -16,7 +16,9 @@ public class SelectionSort extends Ordenador {
                     menor = j;
                 }
             }
-            trocar(i, menor);
+            if (menor != i) {
+                trocar(i, menor);
+            }
         }
     }
 }
